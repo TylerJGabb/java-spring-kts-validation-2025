@@ -67,6 +67,9 @@ class ExampleControllerIntegrationTests @Autowired constructor(
 
         mockMvc.perform(delete("/examples/$id"))
             .andExpect(status().isNoContent)
+
+        mockMvc.perform(get("/examples/$id"))
+            .andExpect(status().isNotFound)
     }
 
     @Test
