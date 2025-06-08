@@ -4,14 +4,6 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-  flyway:
-    enabled: true
 management:
   endpoint:
     health:
