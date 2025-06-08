@@ -2,13 +2,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ExampleDto;
+import com.example.demo.service.ExampleService;
 import com.example.demo.validation.OnCreate;
 import com.example.demo.validation.OnUpdate;
-import com.example.demo.service.ExampleService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/examples")
@@ -33,6 +34,11 @@ public class ExampleController {
     @GetMapping("/{id}")
     public ResponseEntity<ExampleDto> get(@PathVariable Long id) {
         return ResponseEntity.ok(service.get(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ExampleDto>> getAll() {
+        return ResponseEntity.ok(service.getAll());
     }
 
     @DeleteMapping("/{id}")

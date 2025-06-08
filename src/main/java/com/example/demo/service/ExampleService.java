@@ -8,6 +8,8 @@ import com.example.demo.repository.ExampleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ExampleService {
 
@@ -33,6 +35,12 @@ public class ExampleService {
         ExampleEntity entity = repository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Entity " + id + " not found"));
         return ExampleMapper.toDto(entity);
+    }
+
+    public List<ExampleDto> getAll() {
+        return repository.findAll().stream()
+            .map(ExampleMapper::toDto)
+            .toList();
     }
 
     public void delete(Long id) {
