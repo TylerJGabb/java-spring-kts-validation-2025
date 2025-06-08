@@ -21,7 +21,12 @@ class ExampleControllerIntegrationTests @Autowired constructor(
 
     @Test
     fun `CRUD flow works with JSON`() {
-        val createJson = "{" + "\"name\":\"Foo\",\"description\":\"desc\"}"
+        val createJson = """
+            {
+                "name": "Foo",
+                "description": "desc"
+            }
+        """.trimIndent()
         val createResult = mockMvc.perform(
             post("/examples")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -35,7 +40,11 @@ class ExampleControllerIntegrationTests @Autowired constructor(
 
         val id = objectMapper.readTree(createResult.response.contentAsString)["id"].asLong()
 
-        val updateJson = "{" + "\"name\":\"Bar\"}"
+        val updateJson = """
+            {
+                "name": "Bar"
+            }
+        """.trimIndent()
         mockMvc.perform(
             patch("/examples/$id")
                 .contentType(MediaType.APPLICATION_JSON)
