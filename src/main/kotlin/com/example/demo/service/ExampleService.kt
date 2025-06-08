@@ -1,11 +1,11 @@
 package com.example.demo.service
 
 import com.example.demo.dto.ExampleDto
-import com.example.demo.entity.ExampleEntity
 import com.example.demo.mapper.ExampleMapper
 import com.example.demo.repository.ExampleRepository
 import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ExampleService(private val repository: ExampleRepository) {
@@ -15,6 +15,7 @@ class ExampleService(private val repository: ExampleRepository) {
         return ExampleMapper.toDto(repository.save(entity))
     }
 
+    @Transactional
     fun update(id: Long, dto: ExampleDto): ExampleDto {
         val entity = repository.findById(id)
             .orElseThrow { EntityNotFoundException("Entity $id not found") }
@@ -31,6 +32,7 @@ class ExampleService(private val repository: ExampleRepository) {
     fun getAll(): List<ExampleDto> =
         repository.findAll().map { ExampleMapper.toDto(it) }
 
+    @Transactional
     fun delete(id: Long) {
         val entity = repository.findById(id)
             .orElseThrow { EntityNotFoundException("Entity $id not found") }
