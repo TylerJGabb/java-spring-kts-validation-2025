@@ -84,4 +84,48 @@ class ExampleControllerIntegrationTests @Autowired constructor(
         mockMvc.perform(get("/examples/999999"))
             .andExpect(status().isNotFound)
     }
+
+    @Test
+    fun `creating with invalid characters returns 400`() {
+        val invalidJson = """
+            {
+                "name": "Bad#Name"
+            }
+        """.trimIndent()
+
+        mockMvc.perform(
+            post("/examples")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(invalidJson)
+        ).andExpect(status().isBadRequest)
+    }
+
+    @Test
+    fun `updating with invalid characters returns 400`() {
+        val createJson = """
+            {
+                "name": "GoodName"
+            }
+        """.trimIndent()
+
+        val createResult = mockMvc.perform(
+            post("/examples")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createJson)
+        ).andExpect(status().isCreated).andReturn()
+
+        val id = objectMapper.readTree(createResult.response.contentAsString)["id"].asLong()
+
+        val patchJson = """
+            {
+                "name": "Bad#Name"
+            }
+        """.trimIndent()
+
+        mockMvc.perform(
+            patch("/examples/$id")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(patchJson)
+        ).andExpect(status().isBadRequest)
+    }
 }
