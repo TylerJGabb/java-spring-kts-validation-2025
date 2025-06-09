@@ -45,6 +45,7 @@ docker compose up
 ```
 
 The API will then be available on `http://localhost:8080`.
+Swagger docs are made available at the `/swagger-ui.html` endpoint
 
 ### Database container only
 
