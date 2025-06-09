@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: ${LOGGING_PROFILE:local}
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/demo}
     username: ${DB_USERNAME:demo}
