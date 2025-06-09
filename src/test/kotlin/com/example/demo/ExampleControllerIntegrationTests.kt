@@ -86,8 +86,8 @@ class ExampleControllerIntegrationTests @Autowired constructor(
     }
 
     @Test
-    fun `creating with invalid characters returns 400`() {
-        val invalidJson = """
+    fun `creating with invalid name returns 400`() {
+        val badChar = """
             {
                 "name": "Bad#Name"
             }
@@ -96,12 +96,36 @@ class ExampleControllerIntegrationTests @Autowired constructor(
         mockMvc.perform(
             post("/examples")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(invalidJson)
+                .content(badChar)
+        ).andExpect(status().isBadRequest)
+
+        val tooShort = """
+            {
+                "name": "s"
+            }
+        """.trimIndent()
+
+        mockMvc.perform(
+            post("/examples")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(tooShort)
+        ).andExpect(status().isBadRequest)
+
+        val tooLong = """
+            {
+                "name": "${"a".repeat(65)}"
+            }
+        """.trimIndent()
+
+        mockMvc.perform(
+            post("/examples")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(tooLong)
         ).andExpect(status().isBadRequest)
     }
 
     @Test
-    fun `updating with invalid characters returns 400`() {
+    fun `updating with invalid name returns 400`() {
         val createJson = """
             {
                 "name": "GoodName"
@@ -116,7 +140,7 @@ class ExampleControllerIntegrationTests @Autowired constructor(
 
         val id = objectMapper.readTree(createResult.response.contentAsString)["id"].asLong()
 
-        val patchJson = """
+        val badChar = """
             {
                 "name": "Bad#Name"
             }
@@ -125,7 +149,29 @@ class ExampleControllerIntegrationTests @Autowired constructor(
         mockMvc.perform(
             patch("/examples/$id")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(patchJson)
+                .content(badChar)
+        ).andExpect(status().isBadRequest)
+
+        val tooShort = """
+            {
+                "name": "s"
+            }
+        """.trimIndent()
+        mockMvc.perform(
+            patch("/examples/$id")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(tooShort)
+        ).andExpect(status().isBadRequest)
+
+        val tooLong = """
+            {
+                "name": "${"a".repeat(65)}"
+            }
+        """.trimIndent()
+        mockMvc.perform(
+            patch("/examples/$id")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(tooLong)
         ).andExpect(status().isBadRequest)
     }
 }
