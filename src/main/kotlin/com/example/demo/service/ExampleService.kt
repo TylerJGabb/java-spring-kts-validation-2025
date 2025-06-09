@@ -1,17 +1,16 @@
 package com.example.demo.service
 
 import com.example.demo.dto.ExampleDto
+import com.example.demo.logging.Loggable
 import com.example.demo.mapper.ExampleMapper
 import com.example.demo.repository.ExampleRepository
 import jakarta.persistence.EntityNotFoundException
-import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class ExampleService(private val repository: ExampleRepository) {
+class ExampleService(private val repository: ExampleRepository): Loggable() {
 
-    private val logger = LoggerFactory.getLogger(javaClass)
 
     fun create(dto: ExampleDto): ExampleDto {
         logger.info("Creating new example")
