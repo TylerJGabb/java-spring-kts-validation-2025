@@ -14,9 +14,9 @@ data class ExampleDto(
         example = "Sample Name"
     )
     @field:Pattern(
-        regexp = "^[A-Za-z0-9 ]+$",
+        regexp = "^[a-zA-Z0-9 ]{3,64}\$",
         groups = [OnCreate::class, OnUpdate::class],
-        message = "Name can only contain letters, numbers, and spaces"
+        message = "Name can only contain letters, numbers, and spaces. It must be between 3 and 64 characters long."
     )
     var name: String? = null,
 
